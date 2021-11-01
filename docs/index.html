@@ -8,19 +8,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
   <!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css"> -->
   <!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/themes/buble.css"> -->
-  <!-- Theme: Defaults -->
-<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-defaults.css"> -->
+
 <!-- Theme: Simple -->
-<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css"> -->
-
+<link rel="stylesheet" class="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css" title="light">
 <!-- Theme: Simple Dark -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css">
-
+<link rel="stylesheet" class="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css" title="dark">
 
 
 </head>
-<body>
-  <div id="app"></div>
+<body>	
+  
+
+  
+	
+  <div id="app">
+	
+	
+  </div>
   <script>
     window.$docsify = {
       name: '',
@@ -29,6 +33,7 @@
 	  loadNavbar: true,
 	  subMaxLevel: 1,
 	  coverpage: true,
+	  onlyCover: true,
 	  noEmoji: true,
 	  search: 'auto', // 默认值
 	  search: {
@@ -42,7 +47,38 @@
 		buttonText : '复制',
 		errorText  : '复制失败',
 		successText: '复制成功'
-	  }
+	  },
+	  plugins: [
+		function(hook) {
+		  var footer = [
+			'<hr/>',
+			'<footer>',
+			'主题：<a data-theme="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css" class="demo-theme-preview">白色</a>',
+			'<a data-theme="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css" class="demo-theme-preview"> | 黑色</a>',
+			'</footer>',
+		  ].join('');
+
+	      hook.afterEach(function(html) {
+			return html + footer;
+		  });
+		  
+		  hook.ready(function(html) {
+			  var previewList = Docsify.dom.findAll('.demo-theme-preview');
+			  var themes = Docsify.dom.findAll('.stylesheet');
+
+			  previewList.forEach(function (preview) {
+			      preview.onclick = function(e) {
+					  let link = e.target.getAttribute('data-theme')
+					  
+					  // 使用禁用的方式会导致样式丢失
+					  themes.forEach(function (theme) {
+						  theme.setAttribute("href", link);
+					  });
+				  }
+			});
+		  });
+		}
+	  ]
     }
   </script>
   <!-- Docsify v4 -->
